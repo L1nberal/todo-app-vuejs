@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="app.css" />
+    <title>TodoApp-VueJS</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="app-body">
+        <h1 class="title">
+          <div class="title__check-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path
+                d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+              ></path>
+            </svg>
+          </div>
+
+          <span class="title__text">Todo App</span>
+        </h1>
+
+        <h2 class="sub-title">Tasks</h2>
+
+        <div class="empty-notification" v-if="todoList.length === 0">
+          No tasks created
+        </div>
+
+        <ul class="todo-list">
+          <li class="todo-list__item" v-for="item in todoList">
+            {{ item.title }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

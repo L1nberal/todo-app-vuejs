@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Fenix&family=Madimi+One&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: 'Fenix', serif;
+}
+
+body {
+  margin: 0;
+}
+
+#app {
+  background-image: url(./assets/bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.app-body {
+  width: 900px;
+  margin: 0px auto;
+}
+
+.title {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.title__check-icon {
+  background-color: #1e212f;
+  fill: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 99999px;
+  font-size: 15px;
+  transition: 100ms linear;
+}
+
+.title__check-icon:hover {
+  scale: 1.2;
+  box-shadow: #41465c;
+}
+
+.sub-title {
+  margin-top: 50px;
+}
+
+.empty-notification {
+  color: #616895;
+}
+
+.todo-list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.todo-list__item {
+  list-style: none;
+  padding: 10px;
+  height: 50px;
+  background-color: #fad7de;
+  background-color: rgba(red, green, blue, alpha);
+  border-radius: 6px;
+  line-height: 30px;
+  display: block;
+}
