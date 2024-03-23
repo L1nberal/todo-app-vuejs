@@ -15,6 +15,7 @@ body {
   background-size: cover;
   min-height: 100vh;
   overflow: hidden;
+  padding-bottom: 100px;
 }
 
 .app-body {
@@ -48,6 +49,7 @@ body {
 
 .sub-title {
   margin-top: 50px;
+  font-size: 27px;
 }
 
 .empty-notification {
@@ -62,13 +64,123 @@ body {
   gap: 10px;
 }
 
-.todo-list__item {
+.list-item {
   list-style: none;
+  font-size: 16px;
+  font-weight: 500;
   padding: 10px;
-  height: 50px;
-  background-color: #fad7de;
-  background-color: rgba(red, green, blue, alpha);
+  height: 55px;
   border-radius: 6px;
-  line-height: 30px;
-  display: block;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(248, 215, 225, 0.7);
+}
+
+.list-item:hover {
+  background-color: #fad8df;
+}
+
+.list-item__icon {
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  border: 1px solid #5c5d81;
+  fill: #5c5d81;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-item__icon:hover {
+  background-color: #e2bfc6;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-grow: 1;
+  justify-content: end;
+}
+
+.actions__btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.actions__btn:hover {
+  background-color: #e2bfc6;
+}
+
+.todo-form {
+  display: flex;
+  width: 900px;
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.todo-form__input {
+  height: 50px;
+  outline: 0;
+  border: 0;
+  background-color: rgba(248, 215, 225, 0.7);
+  border-radius: 8px 0px 0px 8px;
+  display: flex;
+  flex-grow: 1;
+  font-size: 16px;
+  padding: 0px 10px;
+  color: #787777;
+  font-weight: 600;
+}
+
+.submit-btn {
+  border-radius: 0px 8px 8px 0px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  background-color: #1e212f;
+  padding: 0px 20px;
+  cursor: pointer;
+  transition: 200ms;
+}
+
+.submit-btn:hover {
+  background-color: #2d3146;
+  box-shadow: 0 0 0 5px rgba(45, 49, 70, 0.5);
+  scale: 1.05;
+  animation: submitBtnHovered 1s infinite linear;
+}
+
+.submit-btn__text {
+  color: white;
+  font-size: 18px;
+}
+
+@keyframes submitBtnHovered {
+  0% {
+    background-color: #2d3146;
+    box-shadow: 0 0 0 0px rgba(45, 49, 70, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgba(45, 49, 70, 0.5);
+    transform: scale(1.02);
+  }
+
+  100% {
+    box-shadow: 0 0 0 7px rgba(45, 49, 70, 0);
+  }
 }

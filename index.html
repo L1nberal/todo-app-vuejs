@@ -28,11 +28,78 @@
         </div>
 
         <ul class="todo-list">
-          <li class="todo-list__item" v-for="item in todoList">
-            {{ item.title }}
+          <li class="list-item" v-for="item in todoList">
+            <div class="list-item__icon">
+              <svg width="15" height="15" viewBox="0 0 24 24">
+                <path
+                  d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+                ></path>
+              </svg>
+            </div>
+
+            <span>{{ item.title }}</span>
+
+            <div class="actions">
+              <button class="actions__btn important-btn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="ionicon"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    d="M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linejoin="round"
+                    stroke-width="32"
+                  ></path>
+                </svg>
+              </button>
+
+              <button class="actions__btn more-btn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="ionicon"
+                  viewBox="0 0 512 512"
+                >
+                  <circle cx="256" cy="256" r="48"></circle>
+                  <circle cx="416" cy="256" r="48"></circle>
+                  <circle cx="96" cy="256" r="48"></circle>
+                </svg>
+              </button>
+            </div>
           </li>
         </ul>
       </div>
+
+      <form v-on:submit.prevent="handleOnSubmit" class="todo-form">
+        <input
+          class="todo-form__input"
+          type="text"
+          name="todo"
+          placeholder="What do you need to do?"
+        />
+
+        <button class="submit-btn" type="submit">
+          <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 3.5V12.5M12.5 8H3.5"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </span>
+
+          <span class="submit-btn__text">Add</span>
+        </button>
+      </form>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>

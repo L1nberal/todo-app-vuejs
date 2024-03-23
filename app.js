@@ -2,10 +2,7 @@ const { createApp, ref } = Vue;
 
 const vueIntance = createApp({
   setup() {
-    const message = ref('Hello vue!');
-    const title = 'Asdasds';
-
-    const todoList = [
+    const todoList = ref([
       {
         id: '1',
         title: 'Learning English',
@@ -30,12 +27,26 @@ const vueIntance = createApp({
         createdAt: '20/03/2024',
         deadline: '26/03/2024',
       },
-    ];
+    ]);
+
+    const handleOnSubmit = (event) => {
+      const formData = new FormData(event.target);
+
+      const [todo] = formData.values();
+
+      todoList._value.push({
+        id: todo,
+        title: todo,
+        createdAt: '20/03/2024',
+        deadline: '26/03/2024',
+      });
+
+      event.target.reset();
+    };
 
     return {
-      message,
-      title,
       todoList,
+      handleOnSubmit,
     };
   },
 });
