@@ -18,15 +18,33 @@ body {
   padding-bottom: 100px;
 }
 
+.tooltip {
+  position: relative;
+}
+
+.tooltip__text {
+  position: absolute;
+  background-color: #1e212f;
+  color: white;
+  padding: 0px 5px;
+  border-radius: 5px;
+  white-space: nowrap;
+  top: 150%;
+  opacity: 0;
+  transition: 200ms;
+  transform: translate(-40%, 0) translateY(0);
+  visibility: hidden;
+}
+
+.tooltip:hover .tooltip__text {
+  opacity: 1;
+  top: 120%;
+  visibility: visible;
+}
+
 .app-body {
   width: 900px;
   margin: 0px auto;
-}
-
-.title {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
 }
 
 .title__check-icon {
@@ -47,13 +65,14 @@ body {
   box-shadow: #41465c;
 }
 
-.sub-title {
-  margin-top: 50px;
-  font-size: 27px;
+.title {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 }
 
-.empty-notification {
-  color: #616895;
+.todo-hidden {
+  display: none !important;
 }
 
 .todo-list {
@@ -62,6 +81,15 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.todo-list__title {
+  margin-top: 50px;
+  font-size: 27px;
+}
+
+.todo-list__empty-notification {
+  color: #616895;
 }
 
 .list-item {
@@ -84,28 +112,79 @@ body {
 
 .list-item__icon {
   cursor: pointer;
-  width: 25px;
-  height: 25px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
   border-radius: 100%;
-  border: 1px solid #5c5d81;
-  fill: #5c5d81;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.list-item__icon:hover {
+.list-item__icon--notDone {
+  fill: #5c5d81;
+  background-color: transparent;
+  border: 1px solid #5c5d81;
+  animation: markAsNotDone 700ms ease-in-out;
+}
+
+.list-item__icon--notDone:hover {
   background-color: #e2bfc6;
 }
 
-.actions {
+@keyframes markAsNotDone {
+  50% {
+    scale: 0.8;
+    transform: rotate(30deg);
+  }
+
+  100% {
+    scale: 1;
+    transform: rotate(0deg);
+  }
+}
+
+.list-item__icon--done {
+  background-color: #1e212f;
+  fill: white;
+  border: 0;
+  animation: markAsDone 700ms ease-in-out;
+}
+
+@keyframes markAsDone {
+  0% {
+    scale: 1.4;
+    background-color: #1e212f;
+    fill: white;
+  }
+
+  50% {
+    transform: rotate(-30deg);
+  }
+
+  100% {
+    scale: 1;
+    transform: rotate(360deg);
+  }
+}
+
+.list-item__title {
+  font-weight: 600;
+}
+
+.list-item__title--done {
+  color: #616895;
+  text-decoration: line-through;
+}
+
+.list-item__actions {
   display: flex;
   gap: 8px;
   flex-grow: 1;
   justify-content: end;
 }
 
-.actions__btn {
+.item-actions__btn {
   width: 28px;
   height: 28px;
   border-radius: 10px;
@@ -117,8 +196,62 @@ body {
   cursor: pointer;
 }
 
-.actions__btn:hover {
+.item-actions__btn:hover {
   background-color: #e2bfc6;
+}
+
+.item-actions__important-btn {
+  fill: #f2a106 !important;
+}
+
+.item-actions__menu-container {
+  position: relative;
+}
+
+.actions-menu {
+  position: absolute;
+  z-index: 999;
+  padding: 5px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: #ebdde4;
+  box-shadow: 0px 0px 5px rgb(155, 155, 155);
+  right: 0;
+  top: 120%;
+  visibility: hidden;
+}
+
+.actions-menu-opened {
+  visibility: visible;
+}
+
+.actions-menu__item {
+  display: flex;
+  width: 150px;
+  gap: 10px;
+  background-color: transparent;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 10px 7px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.actions-menu__item--delete {
+  color: #b62827;
+}
+
+.actions-menu__item:hover {
+  background-color: rgba(220, 208, 210, 0.8);
+}
+
+.actions-menu__item-icon {
+  width: 20px;
+  height: 20px;
+  fill: #b62827;
 }
 
 .todo-form {
@@ -182,5 +315,38 @@ body {
 
   100% {
     box-shadow: 0 0 0 7px rgba(45, 49, 70, 0);
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  #app {
+    padding: 20px 40px 100px 40px;
+  }
+
+  .app-body {
+    width: 100%;
+  }
+
+  .todo-form {
+    width: 89%;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  #app {
+    padding: 20px 20px 100px 20px;
+  }
+
+  .app-body {
+    width: 100%;
+  }
+
+  .todo-form {
+    width: 95%;
+  }
+
+  .submit-btn {
+    padding: 5px 10px;
+    gap: 3px;
   }
 }

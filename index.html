@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="app.css" />
-    <title>TodoApp-VueJS</title>
+    <title>Document</title>
   </head>
   <body>
     <div id="app">
@@ -21,52 +21,242 @@
           <span class="title__text">Todo App</span>
         </h1>
 
-        <h2 class="sub-title">Tasks</h2>
-
-        <div class="empty-notification" v-if="todoList.length === 0">
-          No tasks created
-        </div>
-
-        <ul class="todo-list">
-          <li class="list-item" v-for="item in todoList">
-            <div class="list-item__icon">
-              <svg width="15" height="15" viewBox="0 0 24 24">
-                <path
-                  d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
-                ></path>
-              </svg>
-            </div>
-
-            <span>{{ item.title }}</span>
-
-            <div class="actions">
-              <button class="actions__btn important-btn">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="ionicon"
-                  viewBox="0 0 512 512"
-                >
+        <ul
+          v-bind:class="['todo-list', importantTasks.length === 0 && 'todo-hidden']"
+        >
+          <h2 class="todo-list__title">Important</h2>
+          <!--===================== duplicated logic(li)======================== -->
+          <li class="list-item" v-for="item in importantTasks">
+            <div class="tooltip">
+              <button
+                v-bind:class="['list-item__icon', item.isDone ? 'list-item__icon--done' : 'list-item__icon--notDone' ]"
+                v-on:click="handleToggleDone(item)"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24">
                   <path
-                    d="M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linejoin="round"
-                    stroke-width="32"
+                    d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
                   ></path>
                 </svg>
               </button>
 
-              <button class="actions__btn more-btn">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="ionicon"
-                  viewBox="0 0 512 512"
+              <div class="tooltip__text">Mark as completed</div>
+            </div>
+
+            <span
+              v-bind:class="['list-item__title', item.isDone && 'list-item__title--done' ]"
+              >{{ item.title }}</span
+            >
+
+            <div class="list-item__actions">
+              <div class="tooltip">
+                <button
+                  v-bind:class="['item-actions__btn', item.isImportant && 'item-actions__important-btn']"
+                  v-on:click="handleToggleImportant(item)"
                 >
-                  <circle cx="256" cy="256" r="48"></circle>
-                  <circle cx="416" cy="256" r="48"></circle>
-                  <circle cx="96" cy="256" r="48"></circle>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="ionicon important-star"
+                    viewBox="0 0 512 512"
+                  >
+                    <title>Star</title>
+                    <path
+                      d="M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-29.2h160.38l48.4-148.95a16 16 0 0130.44 0l48.4 149H480a16 16 0 019.05 29.2L359 310.35l50.13 148.53A16 16 0 01394 480z"
+                    ></path>
+                  </svg>
+                </button>
+
+                <div class="tooltip__text">Mark as Important</div>
+              </div>
+
+              <div class="item-actions__menu-container">
+                <div class="tooltip">
+                  <button
+                    class="item-actions__btn"
+                    v-on:click="handleOpenMenu($event, item)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="ionicon"
+                      viewBox="0 0 512 512"
+                    >
+                      <circle cx="256" cy="256" r="48"></circle>
+                      <circle cx="416" cy="256" r="48"></circle>
+                      <circle cx="96" cy="256" r="48"></circle>
+                    </svg>
+                  </button>
+
+                  <div class="tooltip__text">More options</div>
+                </div>
+                <div
+                  v-bind:class="['actions-menu', item.isMenuOpened && 'actions-menu-opened']"
+                >
+                  <button class="actions-menu__item">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="ionicon actions-menu__item-icon"
+                      viewBox="0 0 512 512"
+                    >
+                      <title>Pencil</title>
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="44"
+                        d="M358.62 129.28L86.49 402.08 70 442l39.92-16.49 272.8-272.13-24.1-24.1zM413.07 74.84l-11.79 11.78 24.1 24.1 11.79-11.79a16.51 16.51 0 000-23.34l-.75-.75a16.51 16.51 0 00-23.35 0z"
+                      ></path>
+                    </svg>
+
+                    <span>Edit task</span>
+                  </button>
+
+                  <button
+                    class="actions-menu__item actions-menu__item--delete"
+                    v-on:click="handleDelete(item)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="ionicon actions-menu__item-icon"
+                      viewBox="0 0 512 512"
+                    >
+                      <title>Trash</title>
+                      <path
+                        d="M296 64h-80a7.91 7.91 0 00-8 8v24h96V72a7.91 7.91 0 00-8-8z"
+                        fill="none"
+                      ></path>
+                      <path
+                        d="M432 96h-96V72a40 40 0 00-40-40h-80a40 40 0 00-40 40v24H80a16 16 0 000 32h17l19 304.92c1.42 26.85 22 47.08 48 47.08h184c26.13 0 46.3-19.78 48-47l19-305h17a16 16 0 000-32zM192.57 416H192a16 16 0 01-16-15.43l-8-224a16 16 0 1132-1.14l8 224A16 16 0 01192.57 416zM272 400a16 16 0 01-32 0V176a16 16 0 0132 0zm32-304h-96V72a7.91 7.91 0 018-8h80a7.91 7.91 0 018 8zm32 304.57A16 16 0 01320 416h-.58A16 16 0 01304 399.43l8-224a16 16 0 1132 1.14z"
+                      ></path>
+                    </svg>
+
+                    <span>Delete Task</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="todo-list">
+          <h2 class="todo-list__title">Tasks</h2>
+
+          <div
+            class="todo-list__empty-notification"
+            v-if="todoList.length === 0"
+          >
+            No tasks created
+          </div>
+          <!--===================== duplicated logic(li)======================== -->
+          <li class="list-item" v-for="item in todoList">
+            <div class="tooltip">
+              <button
+                v-bind:class="['list-item__icon', item.isDone ? 'list-item__icon--done' : 'list-item__icon--notDone' ]"
+                v-on:click="handleToggleDone(item)"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24">
+                  <path
+                    d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+                  ></path>
                 </svg>
               </button>
+
+              <div class="tooltip__text">Mark as completed</div>
+            </div>
+
+            <span
+              v-bind:class="['list-item__title', item.isDone && 'list-item__title--done' ]"
+              >{{ item.title }}</span
+            >
+
+            <div class="list-item__actions">
+              <div class="tooltip">
+                <button
+                  class="item-actions__btn"
+                  v-on:click="handleToggleImportant(item)"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="ionicon"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linejoin="round"
+                      stroke-width="32"
+                    ></path>
+                  </svg>
+                </button>
+
+                <div class="tooltip__text">Mark as Important</div>
+              </div>
+
+              <div class="item-actions__menu-container">
+                <div class="tooltip">
+                  <button
+                    class="item-actions__btn"
+                    v-on:click="handleOpenMenu($event, item)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="ionicon"
+                      viewBox="0 0 512 512"
+                    >
+                      <circle cx="256" cy="256" r="48"></circle>
+                      <circle cx="416" cy="256" r="48"></circle>
+                      <circle cx="96" cy="256" r="48"></circle>
+                    </svg>
+                  </button>
+                  <div class="tooltip__text">More options</div>
+                </div>
+
+                <div
+                  v-bind:class="['actions-menu', item.isMenuOpened && 'actions-menu-opened']"
+                >
+                  <button class="actions-menu__item">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="ionicon actions-menu__item-icon"
+                      viewBox="0 0 512 512"
+                    >
+                      <title>Pencil</title>
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="44"
+                        d="M358.62 129.28L86.49 402.08 70 442l39.92-16.49 272.8-272.13-24.1-24.1zM413.07 74.84l-11.79 11.78 24.1 24.1 11.79-11.79a16.51 16.51 0 000-23.34l-.75-.75a16.51 16.51 0 00-23.35 0z"
+                      ></path>
+                    </svg>
+
+                    <span>Edit task</span>
+                  </button>
+
+                  <button
+                    class="actions-menu__item actions-menu__item--delete"
+                    v-on:click="handleDelete(item)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="ionicon actions-menu__item-icon"
+                      viewBox="0 0 512 512"
+                    >
+                      <title>Trash</title>
+                      <path
+                        d="M296 64h-80a7.91 7.91 0 00-8 8v24h96V72a7.91 7.91 0 00-8-8z"
+                        fill="none"
+                      ></path>
+                      <path
+                        d="M432 96h-96V72a40 40 0 00-40-40h-80a40 40 0 00-40 40v24H80a16 16 0 000 32h17l19 304.92c1.42 26.85 22 47.08 48 47.08h184c26.13 0 46.3-19.78 48-47l19-305h17a16 16 0 000-32zM192.57 416H192a16 16 0 01-16-15.43l-8-224a16 16 0 1132-1.14l8 224A16 16 0 01192.57 416zM272 400a16 16 0 01-32 0V176a16 16 0 0132 0zm32-304h-96V72a7.91 7.91 0 018-8h80a7.91 7.91 0 018 8zm32 304.57A16 16 0 01320 416h-.58A16 16 0 01304 399.43l8-224a16 16 0 1132 1.14z"
+                      ></path>
+                    </svg>
+
+                    <span>Delete Task</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </li>
         </ul>
